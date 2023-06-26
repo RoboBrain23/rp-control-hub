@@ -9,6 +9,8 @@ allowing real-time monitoring and analysis of the collected information.
 
 import requests
 import json
+import sched
+import time
 
 # URL of the endpoint to send the POST request
 URL = ""
@@ -89,7 +91,27 @@ def send_data():
         print("Request sent successfully!. Status code:", response.status_code)
         print(response.text)
     elif response.status_code == 401:
+        print("Trying to login again")
         login()
     else:
         print("Failed to send the request. Status code:", response.status_code)
         print(response.text)
+
+
+def main():
+    login_status_code = login()
+
+    if login_status_code == 200:
+        scheduler = sched.scheduler(time.time, time.sleep)
+        scheduler.enter(0, 1, send_data)
+        interval = INTERVAL
+
+        while True:
+            scheduler.enter(interval, 1, send_data)
+            scheduler.run()
+    else:
+        print("Failed to send the request.")
+
+
+if __name__ == '__main__':
+    main()
