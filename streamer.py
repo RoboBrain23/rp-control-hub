@@ -68,3 +68,28 @@ def login():
         print("Sign-in Failed. Status code:", response.status_code)
         print(response.text)
         return response.status_code
+
+
+# Send the POST request
+def send_data():
+    data = {
+        "chair_id": wheelchair["chair_id"],
+        "temperature": wheelchair["temperature"],
+        "oximeter": wheelchair["oximeter"],
+        "pulse_rate": wheelchair["pulse_rate"]
+    }
+
+    json_data = json.dumps(data)
+    response = requests.post(SENSOR_DATA_ENDPOINT, data=json_data, headers=headers)
+
+    print(f"HEADER: {headers}")
+
+    # Check the response status code
+    if response.status_code == 201:
+        print("Request sent successfully!. Status code:", response.status_code)
+        print(response.text)
+    elif response.status_code == 401:
+        login()
+    else:
+        print("Failed to send the request. Status code:", response.status_code)
+        print(response.text)
