@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>calibration</title>
+    
+          <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/theme.css " type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../_static/theme-vendors.js"></script> -->
+      <script src="../_static/theme.js" defer></script>
+    
+  <link rel="index" title="Index" href="../genindex.html" />
+  <link rel="search" title="Search" href="../search.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../index.html" class="home-link">
+    
+      <span class="site-name">Gaze Controller</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../modules.html#gaze-controller">gaze controller</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../blink.html" class="reference internal ">blink module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../calibration.html" class="reference internal ">calibration module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../eye.html" class="reference internal ">eye module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../gaze.html" class="reference internal ">gaze module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../movement.html" class="reference internal ">movement module</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="index.html">Module code</a> &raquo;</li>
+    
+    <li>calibration</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <h1>Source code for calibration</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="Calibration"><a class="viewcode-back" href="../calibration.html#calibration.Calibration">[docs]</a><span class="k">class</span> <span class="nc">Calibration</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calibration class for calibrating eye threshold and blink threshold&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">calibration_frames</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize Calibration object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__blink_threshold</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__blink_ratios</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames</span> <span class="o">=</span> <span class="n">calibration_frames</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_calibrated</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__done</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__left_eye_thresh</span> <span class="o">=</span> <span class="mi">42</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__right_eye_thresh</span> <span class="o">=</span> <span class="mi">42</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_cal_threshold</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_cal_blink</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="Calibration.threshold_calibrate"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.threshold_calibrate">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">threshold_calibrate</span><span class="p">(</span><span class="n">eye_gaze</span><span class="p">,</span> <span class="n">thresh</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calibrate eye threshold by comparing number of white pixels in eye region.</span>
+<span class="sd">        if percentage of white pixels is less than 20, decrease threshold by 1</span>
+<span class="sd">        if percentage of white pixels is greater than 25, increase threshold by 1</span>
+
+<span class="sd">        :param eye_gaze: Eye object</span>
+
+<span class="sd">        :param thresh: current threshold</span>
+
+<span class="sd">        :return: thresh the updated threshold</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eye_threshold</span> <span class="o">=</span> <span class="n">eye_gaze</span><span class="o">.</span><span class="n">get_eye_threshold</span><span class="p">(</span><span class="n">eye_gaze</span><span class="o">.</span><span class="n">get_eye_region</span><span class="p">())</span>
+        <span class="n">nonzero_percentage</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">countNonZero</span><span class="p">(</span><span class="n">eye_threshold</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">eye_threshold</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">eye_threshold</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="k">if</span> <span class="n">nonzero_percentage</span> <span class="o">&lt;</span> <span class="mi">20</span> <span class="ow">and</span> <span class="n">thresh</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">thresh</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">nonzero_percentage</span> <span class="o">&gt;</span> <span class="mi">25</span> <span class="ow">and</span> <span class="n">thresh</span> <span class="o">&lt;</span> <span class="mi">255</span><span class="p">:</span>
+            <span class="n">thresh</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">thresh</span></div>
+
+<div class="viewcode-block" id="Calibration.blink_calibrate"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.blink_calibrate">[docs]</a>    <span class="k">def</span> <span class="nf">blink_calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calibrate blink threshold by calculating mean of blink ratios that are greater than 4.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__blink_ratios</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">blinks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__blink_ratios</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__blink_threshold</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">blinks</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__blink_threshold</span> <span class="o">=</span> <span class="mf">2.7</span></div>
+
+<div class="viewcode-block" id="Calibration.add_blink_ratio"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.add_blink_ratio">[docs]</a>    <span class="k">def</span> <span class="nf">add_blink_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blink_ratio</span><span class="p">,</span> <span class="n">blink_threshold</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add blink ratio to list of blink ratios if blink ratio is greater than blink_threshold (default 3)</span>
+
+<span class="sd">        :param blink_threshold: blink threshold to compare with blink ratio</span>
+
+<span class="sd">        :param blink_ratio: blink ratio</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">blink_ratio</span> <span class="o">&gt;</span> <span class="n">blink_threshold</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__blink_ratios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">blink_ratio</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Calibration.get_cal_blink_threshold"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.get_cal_blink_threshold">[docs]</a>    <span class="k">def</span> <span class="nf">get_cal_blink_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get calibrated blink threshold value</span>
+
+<span class="sd">        :return: blink threshold</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__blink_threshold</span></div>
+
+<div class="viewcode-block" id="Calibration.get_cal_frames"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.get_cal_frames">[docs]</a>    <span class="k">def</span> <span class="nf">get_cal_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get calibration frames</span>
+
+<span class="sd">        :return: calibration frames</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames</span></div>
+
+<div class="viewcode-block" id="Calibration.set_cal_frames"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.set_cal_frames">[docs]</a>    <span class="k">def</span> <span class="nf">set_cal_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set calibration frames</span>
+
+<span class="sd">        :param frames: calibration frames</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames</span> <span class="o">=</span> <span class="n">frames</span></div>
+
+<div class="viewcode-block" id="Calibration.calibrate"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.calibrate">[docs]</a>    <span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaze_left</span><span class="p">,</span> <span class="n">gaze_right</span><span class="p">,</span> <span class="n">blinking_ratio</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calibrate eye threshold and blink threshold</span>
+
+<span class="sd">        :param gaze_left:  Eye object</span>
+
+<span class="sd">        :param gaze_right: Eye object</span>
+
+<span class="sd">        :param blinking_ratio:  blink ratio value</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames_count</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__is_cal_blink</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__is_cal_threshold</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__left_eye_thresh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold_calibrate</span><span class="p">(</span><span class="n">gaze_left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__left_eye_thresh</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__right_eye_thresh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold_calibrate</span><span class="p">(</span><span class="n">gaze_right</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__right_eye_thresh</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Left eye threshold: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__left_eye_thresh</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Right eye threshold: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__right_eye_thresh</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames_count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># todo: calibrate blinking threshold</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__is_cal_blink</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__is_cal_threshold</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_blink_ratio</span><span class="p">(</span><span class="n">blinking_ratio</span><span class="p">)</span>
+            <span class="c1"># print(f&#39;Blink ratio: {blinking_ratio}&#39;)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_frames_count</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__is_cal_blink</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__is_cal_threshold</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blink_calibrate</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__is_calibrated</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_calibrated</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__done</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Blinking threshold: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_cal_blink_threshold</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__done</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Calibration.set_left_eye_thresh"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.set_left_eye_thresh">[docs]</a>    <span class="k">def</span> <span class="nf">set_left_eye_thresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thresh</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set left eye threshold</span>
+
+<span class="sd">        :param thresh: threshold of left eye</span>
+
+<span class="sd">        :return:  None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__left_eye_thresh</span> <span class="o">=</span> <span class="n">thresh</span></div>
+
+<div class="viewcode-block" id="Calibration.set_right_eye_thresh"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.set_right_eye_thresh">[docs]</a>    <span class="k">def</span> <span class="nf">set_right_eye_thresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thresh</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set right eye threshold</span>
+
+<span class="sd">        :param thresh: threshold of right eye</span>
+
+<span class="sd">        :return:  None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__right_eye_thresh</span> <span class="o">=</span> <span class="n">thresh</span></div>
+
+<div class="viewcode-block" id="Calibration.get_cal_left_eye_thresh"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.get_cal_left_eye_thresh">[docs]</a>    <span class="k">def</span> <span class="nf">get_cal_left_eye_thresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get calibrated left eye threshold</span>
+
+<span class="sd">        :return: left eye threshold</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__left_eye_thresh</span></div>
+
+<div class="viewcode-block" id="Calibration.get_cal_right_eye_thresh"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.get_cal_right_eye_thresh">[docs]</a>    <span class="k">def</span> <span class="nf">get_cal_right_eye_thresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get calibrated right eye threshold</span>
+
+<span class="sd">        :return: right eye threshold</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__right_eye_thresh</span></div>
+
+<div class="viewcode-block" id="Calibration.is_calibrated"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.is_calibrated">[docs]</a>    <span class="k">def</span> <span class="nf">is_calibrated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if calibration is done</span>
+
+<span class="sd">        :return: True if calibration is done, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_calibrated</span></div>
+
+<div class="viewcode-block" id="Calibration.is_cal_blink"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.is_cal_blink">[docs]</a>    <span class="k">def</span> <span class="nf">is_cal_blink</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if calibration is done for blink threshold</span>
+
+<span class="sd">        :return: True if calibration is done, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_cal_blink</span></div>
+
+<div class="viewcode-block" id="Calibration.is_cal_threshold"><a class="viewcode-back" href="../calibration.html#calibration.Calibration.is_cal_threshold">[docs]</a>    <span class="k">def</span> <span class="nf">is_cal_threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if calibration is done for eye threshold</span>
+
+<span class="sd">        :return: True if calibration is done, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_cal_threshold</span></div></div>
+</pre></div>
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2023.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.8.0.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

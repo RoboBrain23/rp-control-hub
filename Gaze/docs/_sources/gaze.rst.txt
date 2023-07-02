@@ -1,0 +1,7 @@
+gaze module
+===========
+
+.. automodule:: gaze
+   :members:
+   :undoc-members:
+   :show-inheritance:

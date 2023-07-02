@@ -1,0 +1,284 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>blink module &#8212; Gaze Controller  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="calibration module" href="calibration.html" />
+    <link rel="prev" title="Gaze Controller" href="modules.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="calibration.html" title="calibration module"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="modules.html" title="Gaze Controller"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Gaze Controller  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">Gaze Controller</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">blink module</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-blink">
+<span id="blink-module"></span><h1>blink module<a class="headerlink" href="#module-blink" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="blink.Blink">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blink.</span></span><span class="sig-name descname"><span class="pre">Blink</span></span><a class="reference internal" href="_modules/blink.html#Blink"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blink.Blink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is used to check if the eye is blinking or not by calculating the blinking ratio of the eye.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blink.Blink.set_blinking_threshold">
+<span class="sig-name descname"><span class="pre">set_blinking_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blink_threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blink.html#Blink.set_blinking_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blink.Blink.set_blinking_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>set eye blinking threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>blink_threshold</strong> – threshold value</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blink.Blink.is_blinking">
+<span class="sig-name descname"><span class="pre">is_blinking</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blink.html#Blink.is_blinking"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blink.Blink.is_blinking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the eye is blinking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the eye is blinking else False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blink.Blink.is_blinking_v2">
+<span class="sig-name descname"><span class="pre">is_blinking_v2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blink.html#Blink.is_blinking_v2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blink.Blink.is_blinking_v2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the eye is blinking on Ear</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the eye is blinking else False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blink.Blink.get_blinking_threshold">
+<span class="sig-name descname"><span class="pre">get_blinking_threshold</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blink.html#Blink.get_blinking_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blink.Blink.get_blinking_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>get eye blinking threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>blinking threshold</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blink.Blink.set_blink_ratio">
+<span class="sig-name descname"><span class="pre">set_blink_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ratio</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blink.html#Blink.set_blink_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blink.Blink.set_blink_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set blink ratio for eye blinking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ratio</strong> – blink ratio</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blink.Blink.get_blink_ratio">
+<span class="sig-name descname"><span class="pre">get_blink_ratio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blink.html#Blink.get_blink_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blink.Blink.get_blink_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get blink ratio for eye blinking</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>blink ratio</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blink.Blink.count_blinks">
+<span class="sig-name descname"><span class="pre">count_blinks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blink.html#Blink.count_blinks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blink.Blink.count_blinks" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Count number of blinks by checking if the eye is closed for a certain number of frames</dt><dd><p>and then open.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>total number of blinks</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blink.Blink.set_closed_eye_frame">
+<span class="sig-name descname"><span class="pre">set_closed_eye_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blink.html#Blink.set_closed_eye_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#blink.Blink.set_closed_eye_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set closed eye frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame</strong> – closed eye frame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">blink module</a><ul>
+<li><a class="reference internal" href="#blink.Blink"><code class="docutils literal notranslate"><span class="pre">Blink</span></code></a><ul>
+<li><a class="reference internal" href="#blink.Blink.set_blinking_threshold"><code class="docutils literal notranslate"><span class="pre">Blink.set_blinking_threshold()</span></code></a></li>
+<li><a class="reference internal" href="#blink.Blink.is_blinking"><code class="docutils literal notranslate"><span class="pre">Blink.is_blinking()</span></code></a></li>
+<li><a class="reference internal" href="#blink.Blink.is_blinking_v2"><code class="docutils literal notranslate"><span class="pre">Blink.is_blinking_v2()</span></code></a></li>
+<li><a class="reference internal" href="#blink.Blink.get_blinking_threshold"><code class="docutils literal notranslate"><span class="pre">Blink.get_blinking_threshold()</span></code></a></li>
+<li><a class="reference internal" href="#blink.Blink.set_blink_ratio"><code class="docutils literal notranslate"><span class="pre">Blink.set_blink_ratio()</span></code></a></li>
+<li><a class="reference internal" href="#blink.Blink.get_blink_ratio"><code class="docutils literal notranslate"><span class="pre">Blink.get_blink_ratio()</span></code></a></li>
+<li><a class="reference internal" href="#blink.Blink.count_blinks"><code class="docutils literal notranslate"><span class="pre">Blink.count_blinks()</span></code></a></li>
+<li><a class="reference internal" href="#blink.Blink.set_closed_eye_frame"><code class="docutils literal notranslate"><span class="pre">Blink.set_closed_eye_frame()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="modules.html"
+                          title="Previous page">&larr; Gaze Controller</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="calibration.html"
+                          title="Next page">&rarr; calibration module</a></p>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="calibration.html" title="calibration module"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="modules.html" title="Gaze Controller"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Gaze Controller  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="modules.html" >Gaze Controller</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">blink module</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

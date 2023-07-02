@@ -1,0 +1,240 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Gaze Controller &#8212; Gaze Controller  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="blink module" href="blink.html" />
+    <link rel="prev" title="Welcome to Gaze Controller’s documentation!" href="index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="blink.html" title="blink module"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Gaze Controller’s documentation!"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Gaze Controller  documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Gaze Controller</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="gaze-controller">
+<h1>Gaze Controller<a class="headerlink" href="#gaze-controller" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="blink.html">blink module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blink.html#blink.Blink"><code class="docutils literal notranslate"><span class="pre">Blink</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blink.html#blink.Blink.set_blinking_threshold"><code class="docutils literal notranslate"><span class="pre">Blink.set_blinking_threshold()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blink.html#blink.Blink.is_blinking"><code class="docutils literal notranslate"><span class="pre">Blink.is_blinking()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blink.html#blink.Blink.is_blinking_v2"><code class="docutils literal notranslate"><span class="pre">Blink.is_blinking_v2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blink.html#blink.Blink.get_blinking_threshold"><code class="docutils literal notranslate"><span class="pre">Blink.get_blinking_threshold()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blink.html#blink.Blink.set_blink_ratio"><code class="docutils literal notranslate"><span class="pre">Blink.set_blink_ratio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blink.html#blink.Blink.get_blink_ratio"><code class="docutils literal notranslate"><span class="pre">Blink.get_blink_ratio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blink.html#blink.Blink.count_blinks"><code class="docutils literal notranslate"><span class="pre">Blink.count_blinks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blink.html#blink.Blink.set_closed_eye_frame"><code class="docutils literal notranslate"><span class="pre">Blink.set_closed_eye_frame()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="calibration.html">calibration module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calibration.html#calibration.Calibration"><code class="docutils literal notranslate"><span class="pre">Calibration</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.threshold_calibrate"><code class="docutils literal notranslate"><span class="pre">Calibration.threshold_calibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.blink_calibrate"><code class="docutils literal notranslate"><span class="pre">Calibration.blink_calibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.add_blink_ratio"><code class="docutils literal notranslate"><span class="pre">Calibration.add_blink_ratio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.get_cal_blink_threshold"><code class="docutils literal notranslate"><span class="pre">Calibration.get_cal_blink_threshold()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.get_cal_frames"><code class="docutils literal notranslate"><span class="pre">Calibration.get_cal_frames()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.set_cal_frames"><code class="docutils literal notranslate"><span class="pre">Calibration.set_cal_frames()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.calibrate"><code class="docutils literal notranslate"><span class="pre">Calibration.calibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.set_left_eye_thresh"><code class="docutils literal notranslate"><span class="pre">Calibration.set_left_eye_thresh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.set_right_eye_thresh"><code class="docutils literal notranslate"><span class="pre">Calibration.set_right_eye_thresh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.get_cal_left_eye_thresh"><code class="docutils literal notranslate"><span class="pre">Calibration.get_cal_left_eye_thresh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.get_cal_right_eye_thresh"><code class="docutils literal notranslate"><span class="pre">Calibration.get_cal_right_eye_thresh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.is_calibrated"><code class="docutils literal notranslate"><span class="pre">Calibration.is_calibrated()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.is_cal_blink"><code class="docutils literal notranslate"><span class="pre">Calibration.is_cal_blink()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#calibration.Calibration.is_cal_threshold"><code class="docutils literal notranslate"><span class="pre">Calibration.is_cal_threshold()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="eye.html">eye module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eye.html#eye.Eye"><code class="docutils literal notranslate"><span class="pre">Eye</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eye.html#eye.Eye.LEFT_EYE_POINTS"><code class="docutils literal notranslate"><span class="pre">Eye.LEFT_EYE_POINTS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eye.html#eye.Eye.RIGHT_EYE_POINTS"><code class="docutils literal notranslate"><span class="pre">Eye.RIGHT_EYE_POINTS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eye.html#eye.Eye.mid_point"><code class="docutils literal notranslate"><span class="pre">Eye.mid_point()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eye.html#eye.Eye.get_eye_region"><code class="docutils literal notranslate"><span class="pre">Eye.get_eye_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eye.html#eye.Eye.blink_ratio"><code class="docutils literal notranslate"><span class="pre">Eye.blink_ratio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eye.html#eye.Eye.get_eye_width"><code class="docutils literal notranslate"><span class="pre">Eye.get_eye_width()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eye.html#eye.Eye.get_blink_ratio"><code class="docutils literal notranslate"><span class="pre">Eye.get_blink_ratio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eye.html#eye.Eye.get_eye_height"><code class="docutils literal notranslate"><span class="pre">Eye.get_eye_height()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gaze.html">gaze module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gaze.html#gaze.Gaze"><code class="docutils literal notranslate"><span class="pre">Gaze</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gaze.html#gaze.Gaze.get_gaze_ratio"><code class="docutils literal notranslate"><span class="pre">Gaze.get_gaze_ratio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gaze.html#gaze.Gaze.get_min_max_eye_region"><code class="docutils literal notranslate"><span class="pre">Gaze.get_min_max_eye_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gaze.html#gaze.Gaze.get_eye_threshold"><code class="docutils literal notranslate"><span class="pre">Gaze.get_eye_threshold()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gaze.html#gaze.Gaze.set_threshold"><code class="docutils literal notranslate"><span class="pre">Gaze.set_threshold()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gaze.html#gaze.Gaze.get_threshold"><code class="docutils literal notranslate"><span class="pre">Gaze.get_threshold()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gaze.html#gaze.Gaze.get_eye_region"><code class="docutils literal notranslate"><span class="pre">Gaze.get_eye_region()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="movement.html">movement module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="movement.html#movement.Movement"><code class="docutils literal notranslate"><span class="pre">Movement</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.run"><code class="docutils literal notranslate"><span class="pre">Movement.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.driver"><code class="docutils literal notranslate"><span class="pre">Movement.driver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.move_counter_reset"><code class="docutils literal notranslate"><span class="pre">Movement.move_counter_reset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.move_forward"><code class="docutils literal notranslate"><span class="pre">Movement.move_forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.move_left"><code class="docutils literal notranslate"><span class="pre">Movement.move_left()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.move_right"><code class="docutils literal notranslate"><span class="pre">Movement.move_right()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.stop"><code class="docutils literal notranslate"><span class="pre">Movement.stop()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.set_gaze_ratio"><code class="docutils literal notranslate"><span class="pre">Movement.set_gaze_ratio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.is_forward"><code class="docutils literal notranslate"><span class="pre">Movement.is_forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.is_left"><code class="docutils literal notranslate"><span class="pre">Movement.is_left()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.is_right"><code class="docutils literal notranslate"><span class="pre">Movement.is_right()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.is_stopped"><code class="docutils literal notranslate"><span class="pre">Movement.is_stopped()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.set_total_blinks"><code class="docutils literal notranslate"><span class="pre">Movement.set_total_blinks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="movement.html#movement.Movement.set_eye_direction_frame"><code class="docutils literal notranslate"><span class="pre">Movement.set_eye_direction_frame()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="index.html"
+                          title="Previous page">&larr; Welcome to Gaze Controller’s documentation!</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="blink.html"
+                          title="Next page">&rarr; blink module</a></p>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="blink.html" title="blink module"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Gaze Controller’s documentation!"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Gaze Controller  documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Gaze Controller</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

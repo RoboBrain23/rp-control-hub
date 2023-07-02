@@ -1,0 +1,7 @@
+eye module
+==========
+
+.. automodule:: eye
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,269 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>eye module &#8212; Gaze Controller  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="gaze module" href="gaze.html" />
+    <link rel="prev" title="calibration module" href="calibration.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gaze.html" title="gaze module"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="calibration.html" title="calibration module"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Gaze Controller  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">Gaze Controller</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">eye module</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-eye">
+<span id="eye-module"></span><h1>eye module<a class="headerlink" href="#module-eye" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="eye.Eye">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eye.</span></span><span class="sig-name descname"><span class="pre">Eye</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">landmarks</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eye.html#Eye"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eye.Eye" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class creates a new frame to isolate the eye and
+get eye diminutions</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eye.Eye.LEFT_EYE_POINTS">
+<span class="sig-name descname"><span class="pre">LEFT_EYE_POINTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[36,</span> <span class="pre">37,</span> <span class="pre">38,</span> <span class="pre">39,</span> <span class="pre">40,</span> <span class="pre">41]</span></em><a class="headerlink" href="#eye.Eye.LEFT_EYE_POINTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eye.Eye.RIGHT_EYE_POINTS">
+<span class="sig-name descname"><span class="pre">RIGHT_EYE_POINTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[42,</span> <span class="pre">43,</span> <span class="pre">44,</span> <span class="pre">45,</span> <span class="pre">46,</span> <span class="pre">47]</span></em><a class="headerlink" href="#eye.Eye.RIGHT_EYE_POINTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eye.Eye.mid_point">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mid_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eye.html#Eye.mid_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eye.Eye.mid_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the middle point (x,y) between two points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p1</strong> – point 1</p></li>
+<li><p><strong>p2</strong> – point 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>middle point (x,y)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eye.Eye.get_eye_region">
+<span class="sig-name descname"><span class="pre">get_eye_region</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eye.html#Eye.get_eye_region"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eye.Eye.get_eye_region" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Eye region from points of the eye region and return it as numpy array of points (x,y).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>eye region (numpy array) of points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eye.Eye.blink_ratio">
+<span class="sig-name descname"><span class="pre">blink_ratio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eye.html#Eye.blink_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eye.Eye.blink_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get blinking ratio by dividing the horizontal distance by the vertical distance of the eye region.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>blink ratio</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eye.Eye.get_eye_width">
+<span class="sig-name descname"><span class="pre">get_eye_width</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eye.html#Eye.get_eye_width"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eye.Eye.get_eye_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Width of Eye by taking the euclidean distance between the horizontal eye landmarks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>width of eye</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eye.Eye.get_blink_ratio">
+<span class="sig-name descname"><span class="pre">get_blink_ratio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eye.html#Eye.get_blink_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eye.Eye.get_blink_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get blinking ratio based on EAR (Eye Aspect Ratio).
+by taking the euclidean distance between the vertical eye landmarks
+and dividing it by the euclidean distance between the horizontal eye landmarks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>blink ratio</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eye.Eye.get_eye_height">
+<span class="sig-name descname"><span class="pre">get_eye_height</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eye.html#Eye.get_eye_height"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eye.Eye.get_eye_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Height of Eye by taking the euclidean distance between the vertical eye landmarks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>height of eye</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">eye module</a><ul>
+<li><a class="reference internal" href="#eye.Eye"><code class="docutils literal notranslate"><span class="pre">Eye</span></code></a><ul>
+<li><a class="reference internal" href="#eye.Eye.LEFT_EYE_POINTS"><code class="docutils literal notranslate"><span class="pre">Eye.LEFT_EYE_POINTS</span></code></a></li>
+<li><a class="reference internal" href="#eye.Eye.RIGHT_EYE_POINTS"><code class="docutils literal notranslate"><span class="pre">Eye.RIGHT_EYE_POINTS</span></code></a></li>
+<li><a class="reference internal" href="#eye.Eye.mid_point"><code class="docutils literal notranslate"><span class="pre">Eye.mid_point()</span></code></a></li>
+<li><a class="reference internal" href="#eye.Eye.get_eye_region"><code class="docutils literal notranslate"><span class="pre">Eye.get_eye_region()</span></code></a></li>
+<li><a class="reference internal" href="#eye.Eye.blink_ratio"><code class="docutils literal notranslate"><span class="pre">Eye.blink_ratio()</span></code></a></li>
+<li><a class="reference internal" href="#eye.Eye.get_eye_width"><code class="docutils literal notranslate"><span class="pre">Eye.get_eye_width()</span></code></a></li>
+<li><a class="reference internal" href="#eye.Eye.get_blink_ratio"><code class="docutils literal notranslate"><span class="pre">Eye.get_blink_ratio()</span></code></a></li>
+<li><a class="reference internal" href="#eye.Eye.get_eye_height"><code class="docutils literal notranslate"><span class="pre">Eye.get_eye_height()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="calibration.html"
+                          title="Previous page">&larr; calibration module</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="gaze.html"
+                          title="Next page">&rarr; gaze module</a></p>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gaze.html" title="gaze module"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="calibration.html" title="calibration module"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Gaze Controller  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="modules.html" >Gaze Controller</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">eye module</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

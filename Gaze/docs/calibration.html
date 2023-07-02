@@ -1,0 +1,374 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>calibration module &#8212; Gaze Controller  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="eye module" href="eye.html" />
+    <link rel="prev" title="blink module" href="blink.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="eye.html" title="eye module"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="blink.html" title="blink module"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Gaze Controller  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">Gaze Controller</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">calibration module</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-calibration">
+<span id="calibration-module"></span><h1>calibration module<a class="headerlink" href="#module-calibration" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="calibration.Calibration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">calibration.</span></span><span class="sig-name descname"><span class="pre">Calibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calibration_frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Calibration class for calibrating eye threshold and blink threshold</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.threshold_calibrate">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">threshold_calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eye_gaze</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.threshold_calibrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.threshold_calibrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calibrate eye threshold by comparing number of white pixels in eye region.
+if percentage of white pixels is less than 20, decrease threshold by 1
+if percentage of white pixels is greater than 25, increase threshold by 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eye_gaze</strong> – Eye object</p></li>
+<li><p><strong>thresh</strong> – current threshold</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>thresh the updated threshold</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.blink_calibrate">
+<span class="sig-name descname"><span class="pre">blink_calibrate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.blink_calibrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.blink_calibrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calibrate blink threshold by calculating mean of blink ratios that are greater than 4.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.add_blink_ratio">
+<span class="sig-name descname"><span class="pre">add_blink_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blink_ratio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blink_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.add_blink_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.add_blink_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add blink ratio to list of blink ratios if blink ratio is greater than blink_threshold (default 3)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>blink_threshold</strong> – blink threshold to compare with blink ratio</p></li>
+<li><p><strong>blink_ratio</strong> – blink ratio</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.get_cal_blink_threshold">
+<span class="sig-name descname"><span class="pre">get_cal_blink_threshold</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.get_cal_blink_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.get_cal_blink_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get calibrated blink threshold value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>blink threshold</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.get_cal_frames">
+<span class="sig-name descname"><span class="pre">get_cal_frames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.get_cal_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.get_cal_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get calibration frames</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>calibration frames</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.set_cal_frames">
+<span class="sig-name descname"><span class="pre">set_cal_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.set_cal_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.set_cal_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set calibration frames</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frames</strong> – calibration frames</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.calibrate">
+<span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaze_left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gaze_right</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blinking_ratio</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.calibrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.calibrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calibrate eye threshold and blink threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaze_left</strong> – Eye object</p></li>
+<li><p><strong>gaze_right</strong> – Eye object</p></li>
+<li><p><strong>blinking_ratio</strong> – blink ratio value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.set_left_eye_thresh">
+<span class="sig-name descname"><span class="pre">set_left_eye_thresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thresh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.set_left_eye_thresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.set_left_eye_thresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set left eye threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>thresh</strong> – threshold of left eye</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.set_right_eye_thresh">
+<span class="sig-name descname"><span class="pre">set_right_eye_thresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thresh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.set_right_eye_thresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.set_right_eye_thresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set right eye threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>thresh</strong> – threshold of right eye</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.get_cal_left_eye_thresh">
+<span class="sig-name descname"><span class="pre">get_cal_left_eye_thresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.get_cal_left_eye_thresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.get_cal_left_eye_thresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get calibrated left eye threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>left eye threshold</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.get_cal_right_eye_thresh">
+<span class="sig-name descname"><span class="pre">get_cal_right_eye_thresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.get_cal_right_eye_thresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.get_cal_right_eye_thresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get calibrated right eye threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>right eye threshold</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.is_calibrated">
+<span class="sig-name descname"><span class="pre">is_calibrated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.is_calibrated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.is_calibrated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if calibration is done</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if calibration is done, False otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.is_cal_blink">
+<span class="sig-name descname"><span class="pre">is_cal_blink</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.is_cal_blink"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.is_cal_blink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if calibration is done for blink threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if calibration is done, False otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calibration.Calibration.is_cal_threshold">
+<span class="sig-name descname"><span class="pre">is_cal_threshold</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calibration.html#Calibration.is_cal_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calibration.Calibration.is_cal_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if calibration is done for eye threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if calibration is done, False otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">calibration module</a><ul>
+<li><a class="reference internal" href="#calibration.Calibration"><code class="docutils literal notranslate"><span class="pre">Calibration</span></code></a><ul>
+<li><a class="reference internal" href="#calibration.Calibration.threshold_calibrate"><code class="docutils literal notranslate"><span class="pre">Calibration.threshold_calibrate()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.blink_calibrate"><code class="docutils literal notranslate"><span class="pre">Calibration.blink_calibrate()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.add_blink_ratio"><code class="docutils literal notranslate"><span class="pre">Calibration.add_blink_ratio()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.get_cal_blink_threshold"><code class="docutils literal notranslate"><span class="pre">Calibration.get_cal_blink_threshold()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.get_cal_frames"><code class="docutils literal notranslate"><span class="pre">Calibration.get_cal_frames()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.set_cal_frames"><code class="docutils literal notranslate"><span class="pre">Calibration.set_cal_frames()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.calibrate"><code class="docutils literal notranslate"><span class="pre">Calibration.calibrate()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.set_left_eye_thresh"><code class="docutils literal notranslate"><span class="pre">Calibration.set_left_eye_thresh()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.set_right_eye_thresh"><code class="docutils literal notranslate"><span class="pre">Calibration.set_right_eye_thresh()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.get_cal_left_eye_thresh"><code class="docutils literal notranslate"><span class="pre">Calibration.get_cal_left_eye_thresh()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.get_cal_right_eye_thresh"><code class="docutils literal notranslate"><span class="pre">Calibration.get_cal_right_eye_thresh()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.is_calibrated"><code class="docutils literal notranslate"><span class="pre">Calibration.is_calibrated()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.is_cal_blink"><code class="docutils literal notranslate"><span class="pre">Calibration.is_cal_blink()</span></code></a></li>
+<li><a class="reference internal" href="#calibration.Calibration.is_cal_threshold"><code class="docutils literal notranslate"><span class="pre">Calibration.is_cal_threshold()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="blink.html"
+                          title="Previous page">&larr; blink module</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="eye.html"
+                          title="Next page">&rarr; eye module</a></p>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="eye.html" title="eye module"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="blink.html" title="blink module"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Gaze Controller  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="modules.html" >Gaze Controller</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">calibration module</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

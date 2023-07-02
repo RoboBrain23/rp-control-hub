@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>movement</title>
+    
+          <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/theme.css " type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../_static/theme-vendors.js"></script> -->
+      <script src="../_static/theme.js" defer></script>
+    
+  <link rel="index" title="Index" href="../genindex.html" />
+  <link rel="search" title="Search" href="../search.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../index.html" class="home-link">
+    
+      <span class="site-name">Gaze Controller</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../modules.html#gaze-controller">gaze controller</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../blink.html" class="reference internal ">blink module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../calibration.html" class="reference internal ">calibration module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../eye.html" class="reference internal ">eye module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../gaze.html" class="reference internal ">gaze module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../movement.html" class="reference internal ">movement module</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="index.html">Module code</a> &raquo;</li>
+    
+    <li>movement</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <h1>Source code for movement</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="Movement"><a class="viewcode-back" href="../movement.html#movement.Movement">[docs]</a><span></span><span class="k">class</span> <span class="nc">Movement</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Movement class is used to get the direction of the eye to use it for controlling the movement.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize Movement object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__total_blinks</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__left_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__right_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__center_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_direction_frame</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_right</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_left</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_forward</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__gaze_ratio</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_running</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Movement.run"><a class="viewcode-back" href="../movement.html#movement.Movement.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the driver function if the total blinks are between 2 and 3 and stop if the total blinks are more than 3.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__total_blinks</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__is_running</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__total_blinks</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__total_blinks</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__is_running</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__is_running</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Movement.driver"><a class="viewcode-back" href="../movement.html#movement.Movement.driver">[docs]</a>    <span class="k">def</span> <span class="nf">driver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Driver function to control the movement.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_running</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__gaze_ratio</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">move_forward</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__gaze_ratio</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">move_left</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__gaze_ratio</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">move_right</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Movement.move_counter_reset"><a class="viewcode-back" href="../movement.html#movement.Movement.move_counter_reset">[docs]</a>    <span class="k">def</span> <span class="nf">move_counter_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset direction counters to 0 for a certain number of frames and not blinking.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__right_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__left_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__center_counter</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Movement.move_forward"><a class="viewcode-back" href="../movement.html#movement.Movement.move_forward">[docs]</a>    <span class="k">def</span> <span class="nf">move_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move forward if gaze ratio is 1 for a certain number of frames and not blinking.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if self.gaze_ratio == 1:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_forward</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__center_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># cv2.putText(frame, &quot;STATE : FORWARD&quot;, (50, 100), FONT, 1, (0, 0, 255), 3)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__center_counter</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eye_direction_frame</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Forward&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Movement.move_left"><a class="viewcode-back" href="../movement.html#movement.Movement.move_left">[docs]</a>    <span class="k">def</span> <span class="nf">move_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move left if gaze ratio is 0 for a certain number of frames and not blinking.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if self.gaze_ratio == 0:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_forward</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__left_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># cv2.putText(frame, &quot;STATE : LEFT&quot;, (50, 100), FONT, 1, (0, 0, 255), 3)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__left_counter</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eye_direction_frame</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Left&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Movement.move_right"><a class="viewcode-back" href="../movement.html#movement.Movement.move_right">[docs]</a>    <span class="k">def</span> <span class="nf">move_right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move right if gaze ratio is 2 for a certain number of frames and not blinking.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if self.gaze_ratio == 2:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_forward</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__right_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># cv2.putText(frame, &quot;STATE : RIGHT&quot;, (50, 100), FONT, 1, (0, 0, 255), 3)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__right_counter</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eye_direction_frame</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Right&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Movement.stop"><a class="viewcode-back" href="../movement.html#movement.Movement.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stop if gaze ratio is not 1, 0 or 2 and reset direction counters.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># cv2.putText(frame, &quot;STATE : STOP&quot;, (50, 100), FONT, 1, (0, 0, 255), 3)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_forward</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_left</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__is_right</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">move_counter_reset</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Movement.set_gaze_ratio"><a class="viewcode-back" href="../movement.html#movement.Movement.set_gaze_ratio">[docs]</a>    <span class="k">def</span> <span class="nf">set_gaze_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaze_ratio</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set gaze ratio to a certain value</span>
+<span class="sd">        :param gaze_ratio: gaze ratio value</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__gaze_ratio</span> <span class="o">=</span> <span class="n">gaze_ratio</span></div>
+
+<div class="viewcode-block" id="Movement.is_forward"><a class="viewcode-back" href="../movement.html#movement.Movement.is_forward">[docs]</a>    <span class="k">def</span> <span class="nf">is_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return if it is forward or not</span>
+
+<span class="sd">        :return: is_forward</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_forward</span></div>
+
+<div class="viewcode-block" id="Movement.is_left"><a class="viewcode-back" href="../movement.html#movement.Movement.is_left">[docs]</a>    <span class="k">def</span> <span class="nf">is_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return if it is left or not</span>
+
+<span class="sd">        :return: is_left</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_left</span></div>
+
+<div class="viewcode-block" id="Movement.is_right"><a class="viewcode-back" href="../movement.html#movement.Movement.is_right">[docs]</a>    <span class="k">def</span> <span class="nf">is_right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return if it is right or not</span>
+
+<span class="sd">        :return: is_right</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_right</span></div>
+
+<div class="viewcode-block" id="Movement.is_stopped"><a class="viewcode-back" href="../movement.html#movement.Movement.is_stopped">[docs]</a>    <span class="k">def</span> <span class="nf">is_stopped</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return if it is stopped or not</span>
+
+<span class="sd">        :return: is_stopped</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_forward</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_left</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_right</span></div>
+
+<div class="viewcode-block" id="Movement.set_total_blinks"><a class="viewcode-back" href="../movement.html#movement.Movement.set_total_blinks">[docs]</a>    <span class="k">def</span> <span class="nf">set_total_blinks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_blinks</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set total blinks to a certain value</span>
+
+<span class="sd">        :param total_blinks: total blinks value</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__total_blinks</span> <span class="o">=</span> <span class="n">total_blinks</span> <span class="o">%</span> <span class="mi">4</span></div>
+
+<div class="viewcode-block" id="Movement.set_eye_direction_frame"><a class="viewcode-back" href="../movement.html#movement.Movement.set_eye_direction_frame">[docs]</a>    <span class="k">def</span> <span class="nf">set_eye_direction_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eye_direction_frame</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set eye direction frame to a certain value</span>
+
+<span class="sd">        :param eye_direction_frame: eye direction frame value</span>
+<span class="sd">        </span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_direction_frame</span> <span class="o">=</span> <span class="n">eye_direction_frame</span></div></div>
+</pre></div>
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2023.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.8.0.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

@@ -1,0 +1,335 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>movement module &#8212; Gaze Controller  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="gaze module" href="gaze.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gaze.html" title="gaze module"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Gaze Controller  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">Gaze Controller</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">movement module</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-movement">
+<span id="movement-module"></span><h1>movement module<a class="headerlink" href="#module-movement" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="movement.Movement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">movement.</span></span><span class="sig-name descname"><span class="pre">Movement</span></span><a class="reference internal" href="_modules/movement.html#Movement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Movement class is used to get the direction of the eye to use it for controlling the movement.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the driver function if the total blinks are between 2 and 3 and stop if the total blinks are more than 3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.driver">
+<span class="sig-name descname"><span class="pre">driver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.driver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.driver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Driver function to control the movement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.move_counter_reset">
+<span class="sig-name descname"><span class="pre">move_counter_reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.move_counter_reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.move_counter_reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset direction counters to 0 for a certain number of frames and not blinking.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.move_forward">
+<span class="sig-name descname"><span class="pre">move_forward</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.move_forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.move_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move forward if gaze ratio is 1 for a certain number of frames and not blinking.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.move_left">
+<span class="sig-name descname"><span class="pre">move_left</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.move_left"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.move_left" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move left if gaze ratio is 0 for a certain number of frames and not blinking.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.move_right">
+<span class="sig-name descname"><span class="pre">move_right</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.move_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.move_right" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move right if gaze ratio is 2 for a certain number of frames and not blinking.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop if gaze ratio is not 1, 0 or 2 and reset direction counters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.set_gaze_ratio">
+<span class="sig-name descname"><span class="pre">set_gaze_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaze_ratio</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.set_gaze_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.set_gaze_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set gaze ratio to a certain value
+:param gaze_ratio: gaze ratio value
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.is_forward">
+<span class="sig-name descname"><span class="pre">is_forward</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.is_forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.is_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return if it is forward or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>is_forward</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.is_left">
+<span class="sig-name descname"><span class="pre">is_left</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.is_left"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.is_left" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return if it is left or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>is_left</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.is_right">
+<span class="sig-name descname"><span class="pre">is_right</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.is_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.is_right" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return if it is right or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>is_right</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.is_stopped">
+<span class="sig-name descname"><span class="pre">is_stopped</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.is_stopped"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.is_stopped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return if it is stopped or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>is_stopped</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.set_total_blinks">
+<span class="sig-name descname"><span class="pre">set_total_blinks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_blinks</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.set_total_blinks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.set_total_blinks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set total blinks to a certain value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>total_blinks</strong> – total blinks value</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="movement.Movement.set_eye_direction_frame">
+<span class="sig-name descname"><span class="pre">set_eye_direction_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eye_direction_frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/movement.html#Movement.set_eye_direction_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#movement.Movement.set_eye_direction_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set eye direction frame to a certain value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eye_direction_frame</strong> – eye direction frame value</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">movement module</a><ul>
+<li><a class="reference internal" href="#movement.Movement"><code class="docutils literal notranslate"><span class="pre">Movement</span></code></a><ul>
+<li><a class="reference internal" href="#movement.Movement.run"><code class="docutils literal notranslate"><span class="pre">Movement.run()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.driver"><code class="docutils literal notranslate"><span class="pre">Movement.driver()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.move_counter_reset"><code class="docutils literal notranslate"><span class="pre">Movement.move_counter_reset()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.move_forward"><code class="docutils literal notranslate"><span class="pre">Movement.move_forward()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.move_left"><code class="docutils literal notranslate"><span class="pre">Movement.move_left()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.move_right"><code class="docutils literal notranslate"><span class="pre">Movement.move_right()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.stop"><code class="docutils literal notranslate"><span class="pre">Movement.stop()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.set_gaze_ratio"><code class="docutils literal notranslate"><span class="pre">Movement.set_gaze_ratio()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.is_forward"><code class="docutils literal notranslate"><span class="pre">Movement.is_forward()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.is_left"><code class="docutils literal notranslate"><span class="pre">Movement.is_left()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.is_right"><code class="docutils literal notranslate"><span class="pre">Movement.is_right()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.is_stopped"><code class="docutils literal notranslate"><span class="pre">Movement.is_stopped()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.set_total_blinks"><code class="docutils literal notranslate"><span class="pre">Movement.set_total_blinks()</span></code></a></li>
+<li><a class="reference internal" href="#movement.Movement.set_eye_direction_frame"><code class="docutils literal notranslate"><span class="pre">Movement.set_eye_direction_frame()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="gaze.html"
+                          title="Previous page">&larr; gaze module</a></p>
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gaze.html" title="gaze module"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Gaze Controller  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="modules.html" >Gaze Controller</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">movement module</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

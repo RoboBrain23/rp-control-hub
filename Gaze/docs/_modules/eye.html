@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>eye</title>
+    
+          <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../_static/theme.css " type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../_static/theme-vendors.js"></script> -->
+      <script src="../_static/theme.js" defer></script>
+    
+  <link rel="index" title="Index" href="../genindex.html" />
+  <link rel="search" title="Search" href="../search.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../index.html" class="home-link">
+    
+      <span class="site-name">Gaze Controller</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../modules.html#gaze-controller">gaze controller</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../blink.html" class="reference internal ">blink module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../calibration.html" class="reference internal ">calibration module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../eye.html" class="reference internal ">eye module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../gaze.html" class="reference internal ">gaze module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../movement.html" class="reference internal ">movement module</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="index.html">Module code</a> &raquo;</li>
+    
+    <li>eye</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <h1>Source code for eye</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="Eye"><a class="viewcode-back" href="../eye.html#eye.Eye">[docs]</a><span class="k">class</span> <span class="nc">Eye</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class creates a new frame to isolate the eye and</span>
+<span class="sd">    get eye diminutions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LEFT_EYE_POINTS</span> <span class="o">=</span> <span class="p">[</span><span class="mi">36</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">41</span><span class="p">]</span>
+    <span class="n">RIGHT_EYE_POINTS</span> <span class="o">=</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">47</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">landmarks</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize Eye object</span>
+
+<span class="sd">        :param frame: frame to isolate the eye</span>
+
+<span class="sd">        :param side: eye side (left or right)</span>
+
+<span class="sd">        :param landmarks: landmarks of the eye</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__side</span> <span class="o">=</span> <span class="n">side</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__side</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;left&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__eye</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LEFT_EYE_POINTS</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__side</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;right&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__eye</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RIGHT_EYE_POINTS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span> <span class="o">=</span> <span class="n">landmarks</span>
+
+<div class="viewcode-block" id="Eye.mid_point"><a class="viewcode-back" href="../eye.html#eye.Eye.mid_point">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">mid_point</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the middle point (x,y) between two points.</span>
+
+<span class="sd">        :param p1: point 1</span>
+
+<span class="sd">        :param p2: point 2</span>
+
+<span class="sd">        :return: middle point (x,y)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">int</span><span class="p">((</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">((</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Eye.get_eye_region"><a class="viewcode-back" href="../eye.html#eye.Eye.get_eye_region">[docs]</a>    <span class="k">def</span> <span class="nf">get_eye_region</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get Eye region from points of the eye region and return it as numpy array of points (x,y).</span>
+
+<span class="sd">        :return: eye region (numpy array) of points</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eye</span>
+        <span class="n">eye_region</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">y</span><span class="p">),</span>
+                               <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">y</span><span class="p">),</span>
+                               <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">y</span><span class="p">),</span>
+                               <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">y</span><span class="p">),</span>
+                               <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span><span class="o">.</span><span class="n">y</span><span class="p">),</span>
+                               <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__landmarks</span><span class="o">.</span><span class="n">part</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">y</span><span class="p">)],</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">eye_region</span></div>
+
+<div class="viewcode-block" id="Eye.blink_ratio"><a class="viewcode-back" href="../eye.html#eye.Eye.blink_ratio">[docs]</a>    <span class="k">def</span> <span class="nf">blink_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get blinking ratio by dividing the horizontal distance by the vertical distance of the eye region.</span>
+
+<span class="sd">        :return: blink ratio</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">horizontal_distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_eye_width</span><span class="p">()</span>
+        <span class="n">vertical_distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_eye_height</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ratio</span> <span class="o">=</span> <span class="n">horizontal_distance</span> <span class="o">/</span> <span class="n">vertical_distance</span>
+        <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+            <span class="n">ratio</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ratio</span></div>
+
+<div class="viewcode-block" id="Eye.get_eye_width"><a class="viewcode-back" href="../eye.html#eye.Eye.get_eye_width">[docs]</a>    <span class="k">def</span> <span class="nf">get_eye_width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get Width of Eye by taking the euclidean distance between the horizontal eye landmarks.</span>
+
+<span class="sd">        :return: width of eye</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_eye_region</span><span class="p">()</span>
+        <span class="n">left_point</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">right_point</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">horizontal_distance</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">left_point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">right_point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                         <span class="n">left_point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">right_point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">horizontal_distance</span></div>
+
+<div class="viewcode-block" id="Eye.get_blink_ratio"><a class="viewcode-back" href="../eye.html#eye.Eye.get_blink_ratio">[docs]</a>    <span class="k">def</span> <span class="nf">get_blink_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get blinking ratio based on EAR (Eye Aspect Ratio).</span>
+<span class="sd">        by taking the euclidean distance between the vertical eye landmarks</span>
+<span class="sd">        and dividing it by the euclidean distance between the horizontal eye landmarks.</span>
+
+<span class="sd">        :return: blink ratio</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eye_region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_eye_region</span><span class="p">()</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">eye_region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">eye_region</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">eye_region</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">eye_region</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">eye_region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">eye_region</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">ear</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ear</span></div>
+
+<div class="viewcode-block" id="Eye.get_eye_height"><a class="viewcode-back" href="../eye.html#eye.Eye.get_eye_height">[docs]</a>    <span class="k">def</span> <span class="nf">get_eye_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get Height of Eye by taking the euclidean distance between the vertical eye landmarks.</span>
+
+<span class="sd">        :return: height of eye</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_eye_region</span><span class="p">()</span>
+        <span class="n">mid_point_up</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mid_point</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">mid_point_down</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mid_point</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">vertical_distance</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">mid_point_up</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">mid_point_down</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                       <span class="n">mid_point_up</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">mid_point_down</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">vertical_distance</span></div></div>
+</pre></div>
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2023.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.8.0.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>
