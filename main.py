@@ -15,7 +15,7 @@ from Gaze import main as gaze
 
 logger = app_logger
 
-URL = "http://localhost:3000"
+URL = "url"
 STREAMER_INTERVAL = 5
 GET_ARDUINO_DATA_INTERVAL = 3
 SEND_ARDUINO_DATA_INTERVAL = 0.1
@@ -35,11 +35,11 @@ gaze_constants = {
 }
 
 
-direction = Value('u', 'S')
+direction = Value('u', 'p')
 
 data = {
-    "chair_id": "5",
-    "password": "10101",
+    "chair_id": "777",
+    "password": "mypassword",
     "temperature": 0,
     "oximeter": 0,
     "pulse_rate": 0,
@@ -55,13 +55,13 @@ def get_arduino_data():
     global data
     while True:
         with lock:
-            data["chair_id"] = "5"
-            data["password"] = "10101"
+            data["chair_id"] = "777"
+            data["password"] = "mypassword"
             data["temperature"] = random.randint(1, 100)
             data["oximeter"] = random.randint(1, 100)
             data["pulse_rate"] = random.randint(1, 100)
             # data["flag"] = random.randint(0, 2)
-            data["flag"] = 1
+            data["flag"] = NO_FLAG
         time.sleep(GET_ARDUINO_DATA_INTERVAL)
 
 
@@ -81,8 +81,10 @@ def stream():
     while not has_id:
         if data["chair_id"] != "" and data["password"] != "":
             has_id = True
+            streamer.set_identity(data['chair_id'], data['password'])
+            break
         time.sleep(1)
-        # logger.warning(f"Chair has no id or password, chair_id: '{data['chair_id']}', password: '{data['password']}'")
+        logger.warning(f"Chair has no id or password, chair_id: '{data['chair_id']}', password: '{data['password']}'")
 
     while True:
         d = {
@@ -94,8 +96,8 @@ def stream():
             streamer.send_data(d)
             time.sleep(streamer.interval)
         except:
-            # logger.error(f"Can't stream this data: {d}")
-            continue
+            logger.error(f"Can't stream this data: {d}")
+
 
 
 def run_gaze(direct):

@@ -10,8 +10,8 @@ import requests
 import json
 import time
 
-# from logger import app_logger
-# logger = app_logger
+from logger import app_logger
+logger = app_logger
 
 
 class Streamer:
