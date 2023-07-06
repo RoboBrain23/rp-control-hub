@@ -10,7 +10,7 @@ class Blink:
         self.__blink_ratio = 1
         self.__threshold = 5.5
         self.__blink_count = 0
-        self.__closed_eye_frame = 10
+        self.__closed_eye_frame = 15
         self.__blink = False
         self.__is_closed = False
         self.__total_blinks = 0
@@ -108,3 +108,11 @@ class Blink:
         :return: None
         """
         self.__closed_eye_frame = frame
+
+    def reset_total_blink_counter(self):
+        """
+        Reset total blink counter
+
+        :return: None
+        """
+        self.__total_blinks = 0

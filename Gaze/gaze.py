@@ -33,7 +33,7 @@ class Gaze:
         eye_threshold = self.get_eye_threshold(self.__eye_region)
         height, width = eye_threshold.shape
 
-        up_side_eye_threshold = eye_threshold[0:int(height / 3), 0:width]
+        up_side_eye_threshold = eye_threshold[0:int(height / 6), 0:width]
         up_side_eye_threshold_white = cv2.countNonZero(up_side_eye_threshold)
 
         left_side_eye_threshold = eye_threshold[int(height / 3):int(2 * height / 3), 0:int(width / 3)]
@@ -46,7 +46,7 @@ class Gaze:
         right_side_eye_threshold = eye_threshold[int(height / 3):int(2 * height / 3), int(2 * width / 3):]
         right_side_eye_threshold_white = cv2.countNonZero(right_side_eye_threshold)
 
-        down_side_eye_threshold = eye_threshold[int(height / 3):, 0:width]
+        down_side_eye_threshold = eye_threshold[int(height / 6):, 0:width]
         down_side_eye_threshold_white = cv2.countNonZero(down_side_eye_threshold)
 
         # cv2.imshow('left', left_side_eye_threshold)
@@ -82,7 +82,7 @@ class Gaze:
             gaze_ratio = 1
         # down (stop)
         else:
-            gaze_ratio = 4
+            gaze_ratio = None
 
         return gaze_ratio
 

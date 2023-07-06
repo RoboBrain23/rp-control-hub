@@ -1,3 +1,4 @@
+import os
 import math
 import numpy as np
 import cv2
@@ -8,34 +9,56 @@ from blink import Blink
 from calibration import Calibration
 from movement import Movement
 
+from logger import app_logger
+
+logger = app_logger
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Todo Make constants.py file and move all constants there and import them here and in other files as well
 # Todo Add comments to all functions and classes
 # Todo Add docstrings to all functions and classes and generate documentation using sphinx
 # Todo Make Unit tests for all functions and classes
 # Todo Improve code readability and quality
-if __name__ == "__main__":
-    # Constants
-    CLOSED_EYES_FRAME = 10
-    EYE_DIRECTION_FRAME = 10
-    CALIBRATION_FRAMES = 200
-    MODEL = "shape_predictor_68_face_landmarks.dat"
-    FONT = cv2.FONT_HERSHEY_SIMPLEX
+
+
+# Constants
+CLOSED_EYES_FRAME = 10
+EYE_DIRECTION_FRAME = 10
+CALIBRATION_FRAMES = 200
+MODEL = "shape_predictor_68_face_landmarks.dat"
+MODEL_FULL_PATH = os.path.join(ROOT_DIR, MODEL)
+FONT = cv2.FONT_HERSHEY_SIMPLEX
+
+def print_message_once(message, show_message):
+    if not show_message:
+        print(message)
+        show_message = True
+    return show_message
+
+
+def run_gaze(direction):
     # Variables
     left_eye_thresh = 100
     right_eye_thresh = 100
+    running_message = False
+    pause_message = False
+
     # Objects
     calibrate = Calibration()
     movement = Movement()
     blink = Blink()
+
     # Set frames
     calibrate.set_cal_frames(CALIBRATION_FRAMES)
     movement.set_eye_direction_frame(EYE_DIRECTION_FRAME)
     blink.set_closed_eye_frame(CLOSED_EYES_FRAME)
+
     # Main
     try:
         cap = cv2.VideoCapture(0)  # initialize camera
         detector = dlib.get_frontal_face_detector()  # initialize face detector
-        predictor = dlib.shape_predictor(MODEL)  # initialize landmark detector
+        predictor = dlib.shape_predictor(MODEL_FULL_PATH)  # initialize landmark detector
 
         while True:
             try:
@@ -69,9 +92,11 @@ if __name__ == "__main__":
                     # Calibrate
                     calibrate.calibrate(gaze_left, gaze_right, blinking_ratio)
                     if calibrate.is_cal_threshold():
-                        cv2.putText(frame, "Calibrating Threshold", (150, 50), FONT, 1, (200, 0, 200), 2)  # show Calibrating Threshold message
+                        cv2.putText(frame, "Calibrating Threshold", (150, 50), FONT, 1, (200, 0, 200),
+                                    2)  # show Calibrating Threshold message
                     elif calibrate.is_cal_blink():
-                        cv2.putText(frame, "Calibrating Blinking", (150, 50), FONT, 1, (200, 0, 200), 2)  # show Calibrating Blinking message
+                        cv2.putText(frame, "Calibrating Blinking", (150, 50), FONT, 1, (200, 0, 200),
+                                    2)  # show Calibrating Blinking message
                     # Check if calibration is done and start the driver
                     if calibrate.is_calibrated():
                         total_blinks = blink.count_blinks()  # Count total blinks
@@ -79,32 +104,55 @@ if __name__ == "__main__":
                         if blink.is_blinking():
                             cv2.putText(frame, "BLINKING", (50, 150), FONT, 3, (255, 0, 0))  # show blinking message
 
-                        cv2.putText(frame, f'Total Blinks: {total_blinks}', (50, 350), FONT, 2, (0, 0, 255), 3)  # show total blinks
+                        cv2.putText(frame, f'Total Blinks: {total_blinks}', (50, 350), FONT, 2, (0, 0, 255),
+                                    3)  # show total blinks
                         # Get total gaze ratio by averaging the left and right eye gaze ratio
-                        gaze_ratio = math.ceil((gaze_right.get_gaze_ratio() + gaze_left.get_gaze_ratio()) / 2)
+                        if gaze_right.get_gaze_ratio() is not None and gaze_left.get_gaze_ratio() is not None:
+                            # print(gaze_right.get_gaze_ratio(), gaze_left.get_gaze_ratio())  # print gaze ratio
+                            gaze_ratio = math.ceil((gaze_right.get_gaze_ratio() + gaze_left.get_gaze_ratio()) / 2)
+                            # print(gaze_ratio)
+                        else:
+                            gaze_ratio = -1
                         # Run the driver
                         movement.set_total_blinks(total_blinks)
                         movement.set_gaze_ratio(gaze_ratio)
                         movement.driver()
-                        if movement.is_stopped():
-                            cv2.putText(frame, "STOP", (50, 100), FONT, 1, (0, 255, 255), 3) # show stop message
-                            # Todo Add stop movement code here
+                        # Check if system is paused
+                        if movement.is_system_running():
+                            cv2.putText(frame, "RUNNING", (50, 100), FONT, 1, (255, 0, 0), 3)
+                            running_message = print_message_once(
+                                "\nSYSTEM IS RUNNING, PLEASE BLINK 2 TIMES TO PAUSE IT", running_message)
+                            pause_message = False
 
-                        if movement.no_movement():
-                            cv2.putText(frame, "NO-MOVEMENT", (50, 100), FONT, 1, (0, 0, 255), 3) # show no movement message
-                            # Todo Add no movement code here
+                            # print(gaze_right.get_gaze_ratio(), gaze_left.get_gaze_ratio())
+                            # print(movement.get_center_counter())
+                            # if movement.is_stopped():
+                            #     cv2.putText(frame, "STOP", (50, 100), FONT, 1, (0, 255, 255), 3) # show stop message
+                            #     print("stop")
 
-                        elif movement.is_forward():
-                            cv2.putText(frame, "FORWARD", (50, 100), FONT, 1, (0, 0, 255), 3)  # show forward message
-                            # Todo Add forward movement code here
+                            if movement.is_forward():
+                                cv2.putText(frame, "FORWARD", (50, 100), FONT, 1, (0, 0, 255),
+                                            3)  # show forward message
+                                direction.value = 'F'
 
-                        elif movement.is_left():
-                            cv2.putText(frame, "LEFT", (50, 100), FONT, 1, (0, 0, 255), 3) # show left message
-                            # Todo Add left movement code here
+                            elif movement.is_left():
+                                cv2.putText(frame, "LEFT", (50, 100), FONT, 1, (0, 0, 255), 3)  # show left
+                                direction.value = 'L'
 
-                        elif movement.is_right():
-                            cv2.putText(frame, "RIGHT", (50, 100), FONT, 1, (0, 0, 255), 3)  # show right message
-                            # Todo Add right movement code here
+                            elif movement.is_right():
+                                cv2.putText(frame, "RIGHT", (50, 100), FONT, 1, (0, 0, 255), 3)  # show right message
+                                direction.value = 'R'
+
+                            elif movement.is_no_movement():
+                                cv2.putText(frame, "NO-MOVEMENT", (50, 100), FONT, 1, (0, 0, 255),
+                                            3)  # show no movement message
+                                direction.value = 'S'
+                        else:
+                            cv2.putText(frame, "PAUSED", (50, 100), FONT, 1, (255, 0, 0), 3)
+                            pause_message = print_message_once("\nSYSTEM IS PAUSED, PLEASE BLINK 2 TIMES TO START IT",
+                                                               pause_message)
+                            running_message = False
+                            direction.value = 'p'
 
                 cv2.imshow('frame', frame)
                 # cv2.imshow('mask',mask)
@@ -118,3 +166,6 @@ if __name__ == "__main__":
         cv2.destroyAllWindows()
     except Exception as e:
         print("Error initializing the camera or the facial landmark model:", e)
+
+if __name__ == "__main__":
+    run_gaze()
