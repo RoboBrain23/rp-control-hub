@@ -9,9 +9,14 @@ import sys
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(ROOT_DIR, 'Gaze'))
+sys.path.append(os.path.join(ROOT_DIR, 'BCI'))
+# sys.path.append(os.path.join(ROOT_DIR, 'BCI\\config'))
+# sys.path.append(os.path.join(ROOT_DIR, 'BCI\\stimulus'))
+
 
 from logger import app_logger
-from Gaze import main as gaze
+from Gaze import gaze_main as gaze
+from BCI import bci_main as bci
 
 logger = app_logger
 
@@ -33,7 +38,6 @@ gaze_constants = {
     'RIGHT': 2,
     'LEFT': 3
 }
-
 
 direction = Value('u', 'p')
 
@@ -60,8 +64,7 @@ def get_arduino_data():
             data["temperature"] = random.randint(1, 100)
             data["oximeter"] = random.randint(1, 100)
             data["pulse_rate"] = random.randint(1, 100)
-            # data["flag"] = random.randint(0, 2)
-            data["flag"] = NO_FLAG
+            data["flag"] = BCI_FLAG
         time.sleep(GET_ARDUINO_DATA_INTERVAL)
 
 
@@ -94,31 +97,20 @@ def stream():
         }
         try:
             streamer.send_data(d)
-            time.sleep(streamer.interval)
         except:
             logger.error(f"Can't stream this data: {d}")
-
+        time.sleep(streamer.interval)
 
 
 def run_gaze(direct):
-    # TODO: IMPLEMENT GAZE CONTROL.
-    # global direction
-    # while True:
-    #     logger.info("GAZE is running...")
-    #     time.sleep(1)
     gaze.run_gaze(direct)
 
 
-def run_bci():
-    # TODO: IMPLEMENT BCI CONTROL.
-    # global direction
-    while True:
-        logger.info("BCI is running...")
-        time.sleep(1)
+def run_bci(direct):
+    bci.run_bci(direct)
 
 
 if __name__ == '__main__':
-
     current_flag = data['flag']
 
     t1 = threading.Thread(target=get_arduino_data, name="data_listener_thread", daemon=True)
@@ -148,7 +140,7 @@ if __name__ == '__main__':
                 if not process_queue.empty():
                     p = process_queue.get()
                     p.terminate()
-                gaze_process = Process(target=run_gaze, args=(direction, ), name="GazeProcess")
+                gaze_process = Process(target=run_gaze, args=(direction,), name="GazeProcess")
                 process_queue.put(gaze_process)
                 gaze_process.start()
                 current_flag = GAZE_FLAG
@@ -157,7 +149,7 @@ if __name__ == '__main__':
                 if not process_queue.empty():
                     p = process_queue.get()
                     p.terminate()
-                bci_process = Process(target=run_bci, name="BciProcess")
+                bci_process = Process(target=run_bci, args=(direction,), name="BciProcess")
                 process_queue.put(bci_process)
                 bci_process.start()
                 current_flag = BCI_FLAG
