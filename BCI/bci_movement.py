@@ -5,6 +5,8 @@ import collections
 from spinning import SpinningCircle
 import random
 import time
+from config import *
+from math import sin, pi
 
 
 class Movement:
@@ -25,8 +27,13 @@ class Movement:
         vectors = collections.defaultdict(list)
 
         completed = False
+        COUNT = 1
+        CLOCK = pygame.time.Clock()
+        FrameRate = FRAMERATE
+        freq = 10
+
         while TIMES > 0 and not completed:
-            self._screen.fill((0, 0, 0))
+            self._screen.fill(BLACK)
             pygame.display.update()
             # calibration_points = self.calculate_random_points(20)
             calibration_points = self.calculate_points()
@@ -35,13 +42,25 @@ class Movement:
 
             point = calibration_points.pop(0)
 
-            pygame.draw.circle(self._screen, (255, 0, 0), point, 5)
+            pygame.draw.circle(self._screen, RED, point, CALIBRATION_CIRCLE_RADIUS)
             done = False
-            spinning = SpinningCircle(8, (0, 255, 0), 360 / N_REQ_VECTORS)
+            spinning = SpinningCircle(CALIBRATION_CIRCLE_RADIUS + 5, GREEN, 360 / N_REQ_VECTORS)
             _, frame = self._camera.read()
             while point and not done:
-                pygame.draw.circle(self._screen, (255, 0, 0), point, 5)
+                CLOCK.tick(FrameRate)
+                tmp = sin(2 * pi * freq * (COUNT / FrameRate))
+                is_colored = (tmp > 0)
+
+                if is_colored:
+                    final_color = RED
+                else:
+                    final_color = BLACK
+
+                pygame.draw.circle(self._screen, final_color, point, CALIBRATION_CIRCLE_RADIUS)
                 pygame.display.update()
+                COUNT += 1
+                if COUNT == FrameRate:
+                    COUNT = 0
 
                 _, frame = self._camera.read()
                 self._gaze.update(frame)
@@ -58,7 +77,8 @@ class Movement:
                     enough += 1
 
                 # draw progress bar on screen using pygame
-                self._screen.blit(spinning, (point[0] - 8, point[1] - 8))
+                self._screen.blit(spinning,
+                                  (point[0] - CALIBRATION_CIRCLE_RADIUS - 5, point[1] - CALIBRATION_CIRCLE_RADIUS - 5))
                 spinning.update()
                 pygame.display.update()
                 # netx point condition
@@ -66,14 +86,15 @@ class Movement:
                     point = calibration_points.pop(0)
                     skip = 0
                     enough = 0
-                    self._screen.fill((0, 0, 0))
-                    pygame.draw.circle(self._screen, (255, 0, 0), point, 5)
+                    self._screen.fill(BLACK)
+                    pygame.draw.circle(self._screen, RED, point, CALIBRATION_CIRCLE_RADIUS)
+                    spinning = SpinningCircle(CALIBRATION_CIRCLE_RADIUS + 5, GREEN, 360 / N_REQ_VECTORS)
                     pygame.display.update()
                     time.sleep(1)
 
                 # end calibration condition
                 if enough >= N_REQ_VECTORS and len(calibration_points) == 0:
-                    self._screen.fill((0, 0, 0))
+                    self._screen.fill(BLACK)
                     pygame.display.update()
                     # completed = True
                     done = True

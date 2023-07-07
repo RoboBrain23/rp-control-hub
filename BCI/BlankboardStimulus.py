@@ -355,10 +355,10 @@ class BlankboardStimulus:
         while not self._done:
             point = movement.get_position()
 
-            if point is not None:
-                self._screen.fill((0, 0, 0))
-                pygame.draw.circle(self._screen, (255, 0, 255), (point[0], point[1]), 10)
-                pygame.display.update()
+            # if point is not None:
+            #     self._screen.fill((0, 0, 0))
+            #     pygame.draw.circle(self._screen, (255, 0, 255), (point[0], point[1]), 10)
+            #     pygame.display.update()
 
             if point is not None:
                 direct = box.get_pointed_direction(point[0], point[1])
