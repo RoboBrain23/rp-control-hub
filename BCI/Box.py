@@ -16,7 +16,7 @@ class Box:
         self._box_width = int(BOX_RATIO*screen_width)
         if self._box_width % 2 != 0:
             self._box_width += 1
-        print(self._box_width)
+        # print(self._box_width)
 
     def get_position(self, position):
         """
