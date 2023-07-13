@@ -65,7 +65,7 @@ def get_arduino_data():
             data["temperature"] = random.randint(1, 100)
             data["oximeter"] = random.randint(1, 100)
             data["pulse_rate"] = random.randint(1, 100)
-            data["flag"] = GAZE_FLAG   
+            data["flag"] = BCI_FLAG
         time.sleep(GET_ARDUINO_DATA_INTERVAL)
 
 
@@ -95,17 +95,17 @@ def send_arduino_data():
                 time.sleep(0.25)
 
 
-    last_comm = 'p'
-    while True:
-        if direction.value != 'p':
-            # if last_comm != direction.value:
-            #     last_comm = direction.value
-            #     print(f"SENDING TO ARDUINO : {direction.value}")
-            #     arduino.write(bytes(str(direction.value), 'utf-8'))
-            #     arduino.write(bytes('\n', 'utf-8'))
-            print(f"SENDING TO ARDUINO : {direction.value}")
-            arduino.write(bytes(str(direction.value), 'utf-8'))
-            arduino.write(bytes('\n', 'utf-8'))
+    # last_comm = 'p'
+    # while True:
+    #     if direction.value != 'p':
+    #         # if last_comm != direction.value:
+    #         #     last_comm = direction.value
+    #         #     print(f"SENDING TO ARDUINO : {direction.value}")
+    #         #     arduino.write(bytes(str(direction.value), 'utf-8'))
+    #         #     arduino.write(bytes('\n', 'utf-8'))
+    #         print(f"SENDING TO ARDUINO : {direction.value}")
+    #         arduino.write(bytes(str(direction.value), 'utf-8'))
+    #         arduino.write(bytes('\n', 'utf-8'))
 
         time.sleep(SEND_ARDUINO_DATA_INTERVAL)
 

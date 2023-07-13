@@ -38,7 +38,8 @@ class BlankboardStimulus:
         # Create the screen
         self._screen = None
         self.cal = True
-
+        self.old_order = ''
+        self.order_count = 0
         self._boxes = {}
 
     def _create_boxes(self):
@@ -52,145 +53,6 @@ class BlankboardStimulus:
         for position, frequency in self._frequencies.items():
             box = Box(position, frequency, screen_width, screen_height)
             self._boxes[position] = box
-
-    def run(self, frequencies: dict, preparation_duration: int, stimulation_duration: int,
-            rest_duration: int, is_full_screen: bool, directions_order: list):
-
-        """
-
-        :param frequencies: Dictionary of the boxes frequencies.
-
-        :param preparation_duration: The duration of the Epoc.
-
-        :param stimulation_duration: The duration of the Epoc.
-
-        :param rest_duration: The duration of the break.
-
-        :param is_full_screen: Indicator to run stimulus in a full-screen mode.
-
-        :param directions_order: List of the direction in order.
-
-        """
-
-        self._frequencies = frequencies
-        self._preparation_duration = preparation_duration
-        self._stimulation_duration = stimulation_duration
-        self._rest_duration = rest_duration
-        self._is_full_screen = is_full_screen
-        self._directions_order = directions_order
-        cam = cv2.VideoCapture(0)
-        face_mesh = mp.solutions.face_mesh.FaceMesh(refine_landmarks=True)
-        # Create the screen
-        self._screen = pygame.display.set_mode((0, 0),
-                                               pygame.FULLSCREEN) if self._is_full_screen else pygame.display.set_mode(
-            [self._screen_width, self._screen_height])
-        self._create_boxes()
-        pygame.init()
-        # write the text on the screen
-        font = pygame.font.Font(pygame.font.get_default_font(), 30)
-        text = font.render('+', True, (255, 255, 255), (0, 0, 0))
-        textRect = text.get_rect()
-        textRect.center = (self._screen_width // 2, self._screen_height // 2)
-        self._screen.blit(text, textRect)
-        pygame.display.update()
-
-        threads = []
-        i = 0
-
-        for box in self._boxes.values():
-            threads.append(threading.Thread(target=self.draw, args=(box,)))
-            threads[i].setDaemon(True)
-            threads[i].start()
-            i += 1
-        left_iris = Eye(cam, 'left', face_mesh)
-        right_iris = Eye(cam, 'right', face_mesh)
-        time.sleep(3)
-        # left_center_x, left_center_y, right_center_x, right_center_y, avg_width, avg_hight, ratio_width, ratio_hight = self.calibration(cam, face_mesh)
-        left_center_x, left_center_y, left_ratio_width, left_ratio_hight, left_width, left_hight = left_iris.calibrate()
-        right_center_x, right_center_y, right_ratio_width, right_ratio_high, right_width, right_hight = right_iris.calibrate()
-        time.sleep(1)
-        for directions in self._directions_order:
-            for position in directions:
-                # Ensure all boxes are visible.
-                for box in self._boxes.values():
-                    box.reset_color()
-
-                self._boxes[position].toggle_color()
-
-                # Set the initial time
-                start_time = time.time()
-                # Main loop
-                print('=====')
-                print(position)
-                while not self._done:
-                    # Todo: Add Gaze calibration
-                    # left,right,_,_,_,_ = self.gaze(cam, face_mesh)
-                    left, _, _ = left_iris.process()
-                    right, _, _ = right_iris.process()
-                    avg_width = (left_width + right_width) / 2
-                    avg_hight = (left_hight + right_hight) / 2
-                    # print(left_p_x-left_center_x + right_p_x-right_center_x)
-                    left_x = left[0] - left_center_x
-                    left_y = left[1] - left_center_y
-                    right_x = right[0] - right_center_x
-                    right_y = right[1] - right_center_y
-                    if left_x < 0:
-                        left_x += left_ratio_width * left_x
-                    if left_y < 0:
-                        left_y += left_ratio_hight * left_y
-                    if right_x < 0:
-                        right_x += right_ratio_width * right_x
-                    if right_y < 0:
-                        right_y += right_ratio_high * right_y
-                    x = (left_x + right_x) / 2
-                    y = (left_y + right_y) / 2
-                    # x = left_x
-                    # y = left_y
-                    # avg_width = left_width
-                    # avg_hight = left_hight
-
-                    # print(left_ratio_width,left_ratio_hight)    
-                    # x = (left[0]-left_center_x + right[0]-right_center_x)/2 #+ (left_p_x-left_center_x + right_p_x-right_center_x)/2 + avg_width/2
-                    # y = (left[1]-left_center_y + right[1]-right_center_y)/2 #+ (left_p_y-left_center_y + right_p_y-right_center_y)/2 + avg_hight/2
-                    # print(a,b,avg_width,avg_hight,ratio_width,ratio_hight)
-                    # print(x,y)
-                    # if x < 0:
-                    #     x+= ratio_width*x
-                    # if y < 0:
-                    #     y+= ratio_hight*y
-                    # print(x,y)                    
-                    x, y = (int(x * self._screen_width / avg_width) + (self._screen_width / 2),
-                            int(y * self._screen_height / avg_hight) + (self._screen_height / 2))
-                    # print('=====')
-                    self._screen.fill((0, 0, 0))
-                    pygame.draw.circle(self._screen, (255, 0, 255), (x, y), 10)
-                    pygame.display.update()
-                    if self._boxes[position].is_inside(x, y):
-                        print('inside')
-
-                    # Toggle the box color after the preparation time.
-                    if time.time() - start_time >= self._preparation_duration \
-                            and self._boxes[position].get_color() == PURPLE:
-                        self._boxes[position].toggle_color()
-
-                    # Stop the stimulus GUI after the session duration.
-                    if time.time() - start_time >= self._preparation_duration + self._stimulation_duration + self._rest_duration:
-                        break
-
-                    if self._preparation_duration + self._stimulation_duration + self._rest_duration > time.time() - start_time >= self._preparation_duration + self._stimulation_duration:
-                        # Hide all boxes.
-                        for box in self._boxes.values():
-                            box.hide_box()
-
-                    for event in pygame.event.get():
-                        if (event.type == pygame.KEYUP) or (event.type == pygame.KEYDOWN):
-                            if event.key == pygame.K_ESCAPE:
-                                self.close_stimulation()
-                        if event.type == pygame.QUIT:
-                            self.close_stimulation()
-
-                    pygame.time.delay(100)
-        pygame.quit()
 
     def close_stimulation(self):
         self._done = True
@@ -230,10 +92,10 @@ class BlankboardStimulus:
                 COUNT = 0
             # print(CLOCK.get_time())  # check the time between each frame (144HZ=7ms; 60HZ=16.67ms)
 
-    def online(self, frequencies, is_full_screen=False):
+    def online(self, frequencies,direction, is_full_screen=False):
         self._frequencies = frequencies
         self._is_full_screen = is_full_screen
-        cam = cv2.VideoCapture(0)
+        cam = cv2.VideoCapture(2)
         face_mesh = mp.solutions.face_mesh.FaceMesh(refine_landmarks=True)
         # Create the screen
         self._screen = pygame.display.set_mode((0, 0),
@@ -261,7 +123,7 @@ class BlankboardStimulus:
             cam)
         right_center_x, right_center_y, right_ratio_width, right_ratio_high, right_width, right_hight = right_iris.calibrate(
             cam)
-        print((left_width + right_width) / (left_hight + right_hight))
+        # print((left_width + right_width) / (left_hight + right_hight))
         # time.sleep(1)
         while not self._done:
             # Todo: Add Gaze calibration
@@ -289,18 +151,53 @@ class BlankboardStimulus:
             x = (left_x + right_x) / 2
             y = (left_y + right_y) / 2
             # print(x,y,(avg_width/avg_hight))
-            x, y = (int((avg_width / avg_hight) * x * self._screen_width / avg_width) + (self._screen_width / 2),
-                    int(y * self._screen_height / avg_hight) + (self._screen_height / 2))
+            x, y = (int((avg_width / avg_hight) * x * pygame.display.Info().current_w  / avg_width) + (pygame.display.Info().current_w  / 2),
+                    int(y * pygame.display.Info().current_h / avg_hight) + (pygame.display.Info().current_h / 2))
             # print('=====')
-            direct = box.get_pointed_direction(x, y)
-            if direct is not None:
-                print(direct)
-            self._screen.fill((0, 0, 0))
-            pygame.draw.circle(self._screen, (255, 0, 255), (x, y), 10)
-            pygame.display.update()
+            point = (x, y)
+            if point is not None:
+                self._screen.fill((0, 0, 0))
+                pygame.draw.circle(self._screen, (255, 0, 255), (point[0], point[1]), 10)
+                self._display_center()
+                pygame.display.update()
+
+            if point is not None:
+                direct = box.get_pointed_direction(point[0], point[1])
+                if direct is not None:
+                    if direct == self.old_order:
+                        self.order_count += 1
+                    else:
+                        self.order_count = 0
+                    if self.order_count == 2:
+                        # print(direct)
+                        if direct == 'top':
+                            direction.value = 'F'
+                            self.order_count = 0
+                            # TODO: send direction from here
+                        elif direct == 'right':
+                            direction.value = 'R'
+                            self.order_count = 0
+                            # TODO: send direction from here
+                        elif direct == 'down':
+                            direction.value = 'B'
+                            self.order_count = 0
+                            # TODO: send direction from here
+                        elif direct == 'left':
+                            direction.value = 'L'
+                            self.order_count = 0
+                            # TODO: send direction from here
+                        else:
+                            direction.value = 'S'
+
+                    if self.order_count == 10 and direct == 'stop':
+                        left_center_x, left_center_y, left_ratio_width, left_ratio_hight, left_width, left_hight = left_iris.calibrate(
+                            cam)
+                        right_center_x, right_center_y, right_ratio_width, right_ratio_high, right_width, right_hight = right_iris.calibrate(
+                            cam)
+                        self.order_count = 0
+                    self.old_order = direct
             # if self._boxes[position].is_inside(x, y):
             #     print('inside')
-
             for event in pygame.event.get():
                 if (event.type == pygame.KEYUP) or (event.type == pygame.KEYDOWN):
                     if event.key == pygame.K_ESCAPE:
@@ -337,50 +234,55 @@ class BlankboardStimulus:
         threads = []
         i = 0
 
-        movement = Movement(self._screen, cam)
+        movement = Movement(self._screen, cam,side='both')
         # movement.calibrate()
-        # movement.save('xy.sav')
-        movement.load('xy.sav')
+        # movement.save('xyca.sav')
+        movement.load('xyca.sav')
         for box in self._boxes.values():
             threads.append(threading.Thread(target=self.draw, args=(box,)))
             threads[i].setDaemon(True)
             threads[i].start()
             i += 1
-        orders_count = 0
-        old_order = ''
         while not self._done:
             point = movement.get_position()
 
             if point is not None:
                 self._screen.fill((0, 0, 0))
                 pygame.draw.circle(self._screen, (255, 0, 255), (point[0], point[1]), 10)
+                self._display_center()
                 pygame.display.update()
 
             if point is not None:
                 direct = box.get_pointed_direction(point[0], point[1])
                 if direct is not None:
-                    if direct == old_order:
-                        orders_count += 1
+                    if direct == self.old_order:
+                        self.order_count += 1
                     else:
-                        order_count = 0
-                    if order_count % 2 == 0:
+                        self.order_count = 0
+                    if self.order_count == 2:
                         # print(direct)
                         if direct == 'top':
                             direction.value = 'F'
+                            self.order_count = 0
                             # TODO: send direction from here
                         elif direct == 'right':
                             direction.value = 'R'
+                            self.order_count = 0
                             # TODO: send direction from here
                         elif direct == 'down':
                             direction.value = 'B'
+                            self.order_count = 0
                             # TODO: send direction from here
                         elif direct == 'left':
                             direction.value = 'L'
+                            self.order_count = 0
                             # TODO: send direction from here
                         else:
                             direction.value = 'S'
-
-                    old_order = direct
+                            # movement.calibrate_center()
+                            self.order_count = 0
+                    self.old_order = direct
+                    # print(self.old_order)
 
             for event in pygame.event.get():
                 if (event.type == pygame.KEYUP) or (event.type == pygame.KEYDOWN):

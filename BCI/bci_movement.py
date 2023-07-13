@@ -21,7 +21,8 @@ class Movement:
         self._camera = camera
         self._calibration = Calibration()
         self._is_calibrated = False
-        self._center = self._gaze.calibrate_center(self._camera)
+        self._center = None
+        self.calibrate_center()
 
     def calibrate(self, N_REQ_VECTORS=50, N_SKIP_VECTORS=25, TIMES=1):
         vectors = collections.defaultdict(list)
@@ -181,3 +182,6 @@ class Movement:
     def load(self, filename):
         self._calibration.load(filename)
         self._is_calibrated = True
+
+    def calibrate_center(self):
+        self._center = self._gaze.calibrate_center(self._camera)

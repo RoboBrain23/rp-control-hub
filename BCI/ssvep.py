@@ -31,8 +31,8 @@ class SSVEP:
         self._stimulus = BlankboardStimulus()
         # self._stimulus.run(self._frequencies, self._preparation_duration, self._stimulation_duration,
         #                    self._rest_duration, self._full_screen_mode, self._direction_order)
-        # self._stimulus.online(self._frequencies,self._full_screen_mode)
-        self._stimulus.online_test(self._frequencies, self._full_screen_mode, direction)
+        self._stimulus.online(self._frequencies,direction,self._full_screen_mode)
+        # self._stimulus.online_test(self._frequencies, self._full_screen_mode, direction)
 
     def start(self, direction):
         self.start_stimulation_gui(direction)
