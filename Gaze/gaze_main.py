@@ -284,7 +284,7 @@ def run_gaze(direction):
                     break
 
             except Exception as e:
-
+                direction.value = 'S'
                 print("Error processing the frame:", e)
 
                 pass
