@@ -56,6 +56,8 @@ EYE_DIRECTION_FRAME = 10
 
 CALIBRATION_FRAMES = 200
 
+RESET_BLINKING_FRAMES = 55
+
 MODEL = "shape_predictor_68_face_landmarks.dat"
 
 MODEL_FULL_PATH = os.path.join(ROOT_DIR, MODEL)
@@ -81,11 +83,14 @@ def print_message_once(message, show_message):
 def run_gaze(direction):
 
     # Variables
-
+    blink_counter = 0
     left_eye_thresh = 100
     right_eye_thresh = 100
+    total_blinks = 0
     running_message = False
     pause_message = False
+    backward = False
+    change_direction = True
     # Objects
     calibrate = Calibration()
     movement = Movement()
@@ -157,8 +162,15 @@ def run_gaze(direction):
                     # Check if calibration is done and start the driver
 
                     if calibrate.is_calibrated():
+                        if blink_counter == RESET_BLINKING_FRAMES-1 or total_blinks == 2:
+                            blink.reset_total_blink_counter()
+                            blink_counter = 0
+                            change_direction = True
 
                         total_blinks = blink.count_blinks()  # Count total blinks
+                        blink_counter += 1
+                        # print(blink_counter)
+                        blink_counter = (blink_counter % RESET_BLINKING_FRAMES)
 
                         # Check if eyes are blinking
 
@@ -194,7 +206,7 @@ def run_gaze(direction):
                         # Run the driver
 
                         movement.set_total_blinks(total_blinks)
-
+                        # print(total_blinks)
                         movement.set_gaze_ratio(gaze_ratio)
 
                         movement.driver()
@@ -202,6 +214,12 @@ def run_gaze(direction):
                         # Check if system is paused
 
                         if movement.is_system_running():
+                            if total_blinks == 1 and change_direction:
+                                if backward:
+                                    backward = False
+                                else:
+                                    backward = True
+                                change_direction = False
 
                             cv2.putText(frame, "RUNNING", (50, 100), FONT, 1, (255, 0, 0), 3)
 
@@ -225,7 +243,7 @@ def run_gaze(direction):
 
 
 
-                            if movement.is_forward():
+                            if movement.is_forward() and not backward:
 
                                 cv2.putText(frame, "FORWARD", (50, 100), FONT, 1, (0, 0, 255),
 
@@ -233,6 +251,13 @@ def run_gaze(direction):
 
                                 direction.value = 'F'
 
+                            if movement.is_forward() and backward:
+
+                                cv2.putText(frame, "BACKWARD", (50, 100), FONT, 1, (0, 0, 255),
+
+                                            3)  # show forward message
+
+                                direction.value = 'F'
 
 
                             elif movement.is_left():

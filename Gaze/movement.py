@@ -26,13 +26,12 @@ class Movement:
 
         :return: None
         """
-        if 2 <= self.__total_blinks <= 3:
-            self.__is_running = True
-        elif self.__total_blinks > 3:
+        if self.__total_blinks == 2:
+            if self.__is_running:
+                self.__is_running = False
+            else:
+                self.__is_running = True
             self.__total_blinks = 0
-            self.__is_running = False
-        else:
-            self.__is_running = False
 
     def driver(self):
         """

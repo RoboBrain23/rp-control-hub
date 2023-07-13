@@ -65,7 +65,7 @@ def get_arduino_data():
             data["temperature"] = random.randint(1, 100)
             data["oximeter"] = random.randint(1, 100)
             data["pulse_rate"] = random.randint(1, 100)
-            data["flag"] = BCI_FLAG
+            data["flag"] = GAZE_FLAG
         time.sleep(GET_ARDUINO_DATA_INTERVAL)
 
 
