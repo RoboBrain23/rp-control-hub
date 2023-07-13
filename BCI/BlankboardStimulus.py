@@ -242,11 +242,7 @@ class BlankboardStimulus:
         self._create_boxes()
         pygame.init()
         # write the text on the screen
-        font = pygame.font.Font(pygame.font.get_default_font(), 30)
-        text = font.render('+', True, (255, 255, 255), (0, 0, 0))
-        textRect = text.get_rect()
-        textRect.center = (self._screen_width // 2, self._screen_height // 2)
-        self._screen.blit(text, textRect)
+        self._display_center()
         pygame.display.update()
 
         threads = []
@@ -318,7 +314,7 @@ class BlankboardStimulus:
     def online_test(self, frequencies, is_full_screen, direction):
         self._frequencies = frequencies
         self._is_full_screen = is_full_screen
-        cam = cv2.VideoCapture(0)
+        cam = cv2.VideoCapture(2)
         # st_time = time()
         # cam = cv2.VideoCapture(1,cv2.CAP_DSHOW,(cv2.CAP_PROP_HW_ACCELERATION, cv2.VIDEO_ACCELERATION_ANY))
         # # ed_time = time()
@@ -342,9 +338,9 @@ class BlankboardStimulus:
         i = 0
 
         movement = Movement(self._screen, cam)
-        movement.calibrate()
-        # movement.save('k.sav')
-        # movement.load('k.sav')
+        # movement.calibrate()
+        # movement.save('xy.sav')
+        movement.load('xy.sav')
         for box in self._boxes.values():
             threads.append(threading.Thread(target=self.draw, args=(box,)))
             threads[i].setDaemon(True)
@@ -355,10 +351,10 @@ class BlankboardStimulus:
         while not self._done:
             point = movement.get_position()
 
-            # if point is not None:
-            #     self._screen.fill((0, 0, 0))
-            #     pygame.draw.circle(self._screen, (255, 0, 255), (point[0], point[1]), 10)
-            #     pygame.display.update()
+            if point is not None:
+                self._screen.fill((0, 0, 0))
+                pygame.draw.circle(self._screen, (255, 0, 255), (point[0], point[1]), 10)
+                pygame.display.update()
 
             if point is not None:
                 direct = box.get_pointed_direction(point[0], point[1])
@@ -367,8 +363,8 @@ class BlankboardStimulus:
                         orders_count += 1
                     else:
                         order_count = 0
-                    if order_count % 15 == 0:
-                        print(direct)
+                    if order_count % 2 == 0:
+                        # print(direct)
                         if direct == 'top':
                             direction.value = 'F'
                             # TODO: send direction from here
