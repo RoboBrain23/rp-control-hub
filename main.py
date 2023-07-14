@@ -21,6 +21,8 @@ from BCI import bci_main as bci
 
 logger = app_logger
 
+RECEIVER_ARDUINO_PORT = "com7"
+SENDER_ARDUINO_PORT = "com8"
 URL = "url"
 STREAMER_INTERVAL = 5
 GET_ARDUINO_DATA_INTERVAL = 3
@@ -58,56 +60,84 @@ streamer = streamer.Streamer(URL, STREAMER_INTERVAL)
 
 def get_arduino_data():
     global data
+    sender_arduino = None
     while True:
-        with lock:
-            data["chair_id"] = "777"
-            data["password"] = "mypassword"
-            data["temperature"] = random.randint(1, 100)
-            data["oximeter"] = random.randint(1, 100)
-            data["pulse_rate"] = random.randint(1, 100)
-            data["flag"] = GAZE_FLAG
-        time.sleep(GET_ARDUINO_DATA_INTERVAL)
+        if not sender_arduino.is_open:
+            try:
+                print("Trying to connect to arduino")
+                sender_arduino = serial.Serial(SENDER_ARDUINO_PORT, 9600, timeout=0.1)
+                time.sleep(2)
+            except:
+                print(f"Failed to connect on, {SENDER_ARDUINO_PORT}")
+                continue
+        print(f"Connected to arduino with port, {SENDER_ARDUINO_PORT}")
+
+        sender_arduino.reset_input_buffer()
+        while True:
+            if sender_arduino.in_waiting > 0:
+                line = sender_arduino.readline().decode('utf-8').rstrip()
+                print(f"Received from arduino: {line}")
+                data = line.split('#')
+                with lock:
+                    data["temperature"] = data[1]
+                    data["oximeter"] = data[3]
+                    data["pulse_rate"] = data[2]
+                    data["flag"] = data[0]
+                time.sleep(GET_ARDUINO_DATA_INTERVAL)
+
+    # while True:
+    #     with lock:
+    #         data["chair_id"] = "777"
+    #         data["password"] = "mypassword"
+    #         data["temperature"] = random.randint(1, 100)
+    #         data["oximeter"] = random.randint(1, 100)
+    #         data["pulse_rate"] = random.randint(1, 100)
+    #         data["flag"] = GAZE_FLAG
+    #     time.sleep(GET_ARDUINO_DATA_INTERVAL)
 
 
 def send_arduino_data():
     global direction
-    locations=['/dev/ttyUSB0','/dev/ttyUSB1','/dev/ttyUSB2','/dev/ttyUSB3', '/dev/ttyS0','/dev/ttyS1','/dev/ttyS2','/dev/ttyS3']
-
-    for device in locations:
-        try:
-            print ("Trying..., {device}")
-            arduino = serial.Serial("com7", 9600, timeout=0.1)
-            break
-        except:
-            print ("Failed to connect on, {device}")
-    
-    if data['flag'] == BCI_FLAG:
-        while True:
-            if direction.value != 'p' and direction.value != 'S':
-                arduino.write(bytes(str(direction.value), 'utf-8'))
-                arduino.write(bytes('\n', 'utf-8'))
-                print(direction.value)
-                time.sleep(2)
-                direction.value = "S"
-                arduino.write(bytes(str(direction.value), 'utf-8'))
-                arduino.write(bytes('\n', 'utf-8'))
-                print(direction.value)
-                time.sleep(0.25)
-
-
+    receiver_arduino = None
     # last_comm = 'p'
-    # while True:
-    #     if direction.value != 'p':
-    #         # if last_comm != direction.value:
-    #         #     last_comm = direction.value
-    #         #     print(f"SENDING TO ARDUINO : {direction.value}")
-    #         #     arduino.write(bytes(str(direction.value), 'utf-8'))
-    #         #     arduino.write(bytes('\n', 'utf-8'))
-    #         print(f"SENDING TO ARDUINO : {direction.value}")
-    #         arduino.write(bytes(str(direction.value), 'utf-8'))
-    #         arduino.write(bytes('\n', 'utf-8'))
 
-        time.sleep(SEND_ARDUINO_DATA_INTERVAL)
+    while True:
+        if not receiver_arduino.is_open:
+            try:
+                print("Trying to connect to arduino")
+                receiver_arduino = serial.Serial(RECEIVER_ARDUINO_PORT, 9600, timeout=0.1)
+                time.sleep(2)
+            except:
+                print(f"Failed to connect on, {RECEIVER_ARDUINO_PORT}")
+                continue
+        print(f"Connected to arduino with port, {RECEIVER_ARDUINO_PORT}")
+
+        if data['flag'] == BCI_FLAG:
+            while True:
+                if direction.value != 'p' and direction.value != 'S':
+                    receiver_arduino.write(bytes(str(direction.value), 'utf-8'))
+                    receiver_arduino.write(bytes('\n', 'utf-8'))
+                    print(direction.value)
+                    time.sleep(2)
+                    direction.value = "S"
+                    receiver_arduino.write(bytes(str(direction.value), 'utf-8'))
+                    receiver_arduino.write(bytes('\n', 'utf-8'))
+                    print(direction.value)
+                    time.sleep(SEND_ARDUINO_DATA_INTERVAL)
+                    if data['flag'] != BCI_FLAG:
+                        break
+        elif data['flag'] == GAZE_FLAG:
+            while True:
+                if direction.value != 'p':
+                    # if last_comm != direction.value:
+                    #     last_comm = direction.value
+                    #     print(f"SENDING TO ARDUINO : {direction.value}")
+                    #     arduino.write(bytes(str(direction.value), 'utf-8'))
+                    #     arduino.write(bytes('\n', 'utf-8'))
+                    print(f"SENDING TO ARDUINO : {direction.value}")
+                    receiver_arduino.write(bytes(str(direction.value), 'utf-8'))
+                    receiver_arduino.write(bytes('\n', 'utf-8'))
+                    time.sleep(SEND_ARDUINO_DATA_INTERVAL)
 
 
 def stream():
